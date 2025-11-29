@@ -254,7 +254,7 @@ export default function CameraView() {
     } catch (err) {
       setHasPermission(false);
       setIsStreaming(false);
-      
+
       // Sanitize error messages - don't expose internal details
       if (err instanceof Error) {
         if (err.name === "NotAllowedError") {
@@ -275,6 +275,7 @@ export default function CameraView() {
     }
   };
 
+  useEffect(() => {
     // Function to stop all camera streams
     const stopAllStreams = () => {
       // Stop main stream
@@ -284,7 +285,7 @@ export default function CameraView() {
         });
         streamRef.current = null;
       }
-      
+
       // Stop all preview streams
       Object.values(previewVideoRefs.current).forEach((previewVideo) => {
         if (previewVideo?.srcObject instanceof MediaStream) {
@@ -294,12 +295,12 @@ export default function CameraView() {
           previewVideo.srcObject = null;
         }
       });
-      
+
       // Clear video sources
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
-      
+
       setIsStreaming(false);
     };
 
@@ -347,7 +348,7 @@ export default function CameraView() {
               <div className="text-6xl mb-4">📷</div>
               <h2 className="text-xl font-bold text-white mb-2">Camera Access Required</h2>
               <p className="text-slate-400 text-sm mb-6 max-w-md">
-                To use the camera features, we need your permission to access your camera. 
+                To use the camera features, we need your permission to access your camera.
                 Your camera feed will only be used locally and will not be shared or stored.
               </p>
               <button
@@ -398,8 +399,8 @@ export default function CameraView() {
           className={`h-full w-full object-cover ${isStreaming ? "block" : "hidden"}`}
           style={{
             filter: `${typeof allFilters[selectedFilter] === "string" ? allFilters[selectedFilter] : allFilters[selectedFilter].filter} ${bokehEnabled ? `blur(${bokehIntensity}px)` : ""} brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`,
-            transform: typeof allFilters[selectedFilter] === "object" && allFilters[selectedFilter].transform 
-              ? `${allFilters[selectedFilter].transform} scaleX(-1)` 
+            transform: typeof allFilters[selectedFilter] === "object" && allFilters[selectedFilter].transform
+              ? `${allFilters[selectedFilter].transform} scaleX(-1)`
               : "scaleX(-1)",
           }}
         />
@@ -407,44 +408,40 @@ export default function CameraView() {
         {guideLineVisible && (
           <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-black/30 pointer-events-none" />
         )}
-        
+
         {/* Camera Quality Controls */}
         <div className="absolute bottom-4 left-4 z-30 space-y-3 rounded-lg border border-slate-700/50 bg-slate-900/95 backdrop-blur-sm p-4 max-w-xs">
           <h4 className="text-xs uppercase tracking-wider text-slate-400 font-medium mb-3">Camera Quality</h4>
-          
+
           {/* Guide Line Toggle */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs text-slate-300">Center Guide Line</label>
               <button
                 onClick={() => setGuideLineVisible(!guideLineVisible)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  guideLineVisible ? "bg-indigo-600" : "bg-slate-700"
-                }`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${guideLineVisible ? "bg-indigo-600" : "bg-slate-700"
+                  }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    guideLineVisible ? "translate-x-6" : "translate-x-1"
-                  }`}
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${guideLineVisible ? "translate-x-6" : "translate-x-1"
+                    }`}
                 />
               </button>
             </div>
           </div>
-          
+
           {/* Bokeh/Blur Toggle */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs text-slate-300">Bokeh/Blur</label>
               <button
                 onClick={() => setBokehEnabled(!bokehEnabled)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  bokehEnabled ? "bg-indigo-600" : "bg-slate-700"
-                }`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${bokehEnabled ? "bg-indigo-600" : "bg-slate-700"
+                  }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    bokehEnabled ? "translate-x-6" : "translate-x-1"
-                  }`}
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${bokehEnabled ? "translate-x-6" : "translate-x-1"
+                    }`}
                 />
               </button>
             </div>
@@ -511,7 +508,7 @@ export default function CameraView() {
             />
           </div>
         </div>
-        
+
         {/* Filter sidebar */}
         <div className="absolute right-0 top-0 h-full w-56 overflow-y-auto border-l border-slate-700/50 bg-slate-900/95 backdrop-blur-sm p-4 z-20">
           <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-4 font-medium">Filters</h3>
@@ -520,11 +517,10 @@ export default function CameraView() {
               <button
                 key={filterName}
                 onClick={() => setSelectedFilter(filterName)}
-                className={`group relative rounded-lg border overflow-hidden transition ${
-                  selectedFilter === filterName
+                className={`group relative rounded-lg border overflow-hidden transition ${selectedFilter === filterName
                     ? "border-indigo-400 ring-2 ring-indigo-400/50"
                     : "border-slate-700 hover:border-slate-600"
-                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900`}
+                  } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900`}
               >
                 {/* Preview video */}
                 <div className="relative aspect-video w-full bg-slate-800">
@@ -540,8 +536,8 @@ export default function CameraView() {
                       className="h-full w-full object-cover"
                       style={{
                         filter: `${typeof allFilters[filterName] === "string" ? allFilters[filterName] : allFilters[filterName].filter} brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`,
-                        transform: typeof allFilters[filterName] === "object" && allFilters[filterName].transform 
-                          ? `${allFilters[filterName].transform} scaleX(-1)` 
+                        transform: typeof allFilters[filterName] === "object" && allFilters[filterName].transform
+                          ? `${allFilters[filterName].transform} scaleX(-1)`
                           : "scaleX(-1)",
                       }}
                     />
@@ -552,11 +548,10 @@ export default function CameraView() {
                   )}
                 </div>
                 {/* Filter name overlay */}
-                <div className={`absolute bottom-0 left-0 right-0 px-2 py-1.5 text-xs font-medium transition ${
-                  selectedFilter === filterName
+                <div className={`absolute bottom-0 left-0 right-0 px-2 py-1.5 text-xs font-medium transition ${selectedFilter === filterName
                     ? "bg-indigo-600/90 text-indigo-100"
                     : "bg-slate-900/80 text-slate-300 group-hover:bg-slate-900/90"
-                }`}>
+                  }`}>
                   {filterName}
                 </div>
               </button>
