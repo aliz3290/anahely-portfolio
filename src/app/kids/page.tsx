@@ -12,36 +12,42 @@ export default function KidsPage() {
       emoji: "🎨",
       color: "from-pink-300 to-rose-400",
       description: "Color your world with rainbows!",
+      href: "/kids/coloring",
     },
     {
       name: "Story Time",
       emoji: "📚",
       color: "from-purple-300 to-indigo-400",
       description: "Magical stories await!",
+      href: "/kids/story-time",
     },
     {
       name: "Puzzle Games",
       emoji: "🧩",
       color: "from-yellow-300 to-orange-400",
       description: "Solve fun puzzles!",
+      href: "/kids/puzzles",
     },
     {
       name: "Sing Along",
       emoji: "🎵",
       color: "from-green-300 to-emerald-400",
       description: "Sing your favorite songs!",
+      href: "/kids/sing-along",
     },
     {
       name: "Dance Party",
       emoji: "💃",
       color: "from-blue-300 to-cyan-400",
       description: "Dance and have fun!",
+      href: "/kids/dance-party",
     },
     {
       name: "Art & Crafts",
       emoji: "✂️",
       color: "from-red-300 to-pink-400",
       description: "Create amazing art!",
+      href: "/kids/art-crafts",
     },
   ];
 
@@ -115,9 +121,10 @@ export default function KidsPage() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {activities.map((activity, index) => (
-                  <div
+                  <Link
                     key={index}
-                    className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activity.color} p-8 shadow-2xl transform transition-all duration-300 cursor-pointer border-4 border-white ${
+                    href={activity.href}
+                    className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activity.color} p-8 shadow-2xl transform transition-all duration-300 cursor-pointer border-4 border-white block ${
                       hoveredActivity === index ? "scale-110 rotate-2 shadow-3xl" : "hover:scale-105"
                     }`}
                     onMouseEnter={() => setHoveredActivity(index)}
@@ -137,7 +144,7 @@ export default function KidsPage() {
                     {/* Decorative stars */}
                     <div className="absolute top-2 right-2 text-2xl opacity-50">✨</div>
                     <div className="absolute bottom-2 left-2 text-2xl opacity-50">⭐</div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>

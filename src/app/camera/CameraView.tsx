@@ -236,40 +236,44 @@ export default function CameraView() {
   const [guideLineVisible, setGuideLineVisible] = useState(true);
   const streamRef = useRef<MediaStream | null>(null);
 
-  useEffect(() => {
-    // Auto-start camera when component mounts
-    const startCamera = async () => {
-      try {
-        setError(null);
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-          audio: false,
-        });
+  // Request camera permission explicitly (not auto-start)
+  const requestCameraPermission = async () => {
+    try {
+      setError(null);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
 
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          streamRef.current = stream;
-          setIsStreaming(true);
-          setHasPermission(true);
-        }
-      } catch (err) {
-        setHasPermission(false);
-        if (err instanceof Error) {
-          if (err.name === "NotAllowedError") {
-            setError("Camera permission denied. Please allow camera access.");
-          } else if (err.name === "NotFoundError") {
-            setError("No camera found on this device.");
-          } else {
-            setError("Failed to access camera: " + err.message);
-          }
-        } else {
-          setError("Failed to access camera.");
-        }
-        setIsStreaming(false);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        setIsStreaming(true);
+        setHasPermission(true);
       }
-    };
-
-    startCamera();
+    } catch (err) {
+      setHasPermission(false);
+      setIsStreaming(false);
+      
+      // Sanitize error messages - don't expose internal details
+      if (err instanceof Error) {
+        if (err.name === "NotAllowedError") {
+          setError("Camera permission was denied. Please allow camera access in your browser settings.");
+        } else if (err.name === "NotFoundError") {
+          setError("No camera found on this device.");
+        } else if (err.name === "NotReadableError") {
+          setError("Camera is already in use by another application.");
+        } else if (err.name === "OverconstrainedError") {
+          setError("Camera settings are not supported by your device.");
+        } else {
+          // Generic error - don't expose internal error details
+          setError("Unable to access camera. Please check your browser settings and try again.");
+        }
+      } else {
+        setError("Unable to access camera. Please check your browser settings and try again.");
+      }
+    }
+  };
 
     // Function to stop all camera streams
     const stopAllStreams = () => {
@@ -337,20 +341,52 @@ export default function CameraView() {
   return (
     <div className="h-screen w-screen md:h-full md:w-full">
       <div className="relative h-full w-full overflow-hidden bg-black md:rounded-none">
-        {!isStreaming && !error && (
+        {!isStreaming && hasPermission === null && !error && (
           <div className="flex h-full items-center justify-center">
-            <div className="text-center space-y-2">
-              <p className="text-slate-400 text-sm">Starting camera...</p>
+            <div className="text-center space-y-4 p-6">
+              <div className="text-6xl mb-4">📷</div>
+              <h2 className="text-xl font-bold text-white mb-2">Camera Access Required</h2>
+              <p className="text-slate-400 text-sm mb-6 max-w-md">
+                To use the camera features, we need your permission to access your camera. 
+                Your camera feed will only be used locally and will not be shared or stored.
+              </p>
+              <button
+                onClick={requestCameraPermission}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg"
+              >
+                Enable Camera
+              </button>
+            </div>
+          </div>
+        )}
+        {!isStreaming && hasPermission === false && !error && (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center space-y-4 p-6">
+              <div className="text-6xl mb-4">🔒</div>
+              <h2 className="text-xl font-bold text-white mb-2">Camera Permission Denied</h2>
+              <p className="text-slate-400 text-sm mb-6 max-w-md">
+                Camera access was denied. Please allow camera access in your browser settings to use this feature.
+              </p>
+              <button
+                onClick={requestCameraPermission}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg"
+              >
+                Try Again
+              </button>
             </div>
           </div>
         )}
         {error && (
           <div className="flex h-full items-center justify-center p-4">
-            <div className="text-center space-y-2">
+            <div className="text-center space-y-4">
+              <div className="text-6xl mb-4">⚠️</div>
               <p className="text-red-400 text-sm font-medium">{error}</p>
-              <p className="text-slate-500 text-xs">
-                Make sure your camera is connected and permissions are granted.
-              </p>
+              <button
+                onClick={requestCameraPermission}
+                className="mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg"
+              >
+                Try Again
+              </button>
             </div>
           </div>
         )}
