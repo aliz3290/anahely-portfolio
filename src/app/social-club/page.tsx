@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { validateEmail, validateUsername, validatePassword, sanitizeInput } from "@/lib/security";
 import { checkRateLimit, getRateLimitResetTime, clearAllRateLimits } from "@/lib/rateLimiter";
 import DOMPurify from "dompurify";
+import NanoIcon from "@/components/NanoIcon";
 
 export default function SocialClubPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -129,7 +130,7 @@ export default function SocialClubPage() {
   const handleOAuthSignIn = async (provider: string) => {
     // Simulate OAuth sign-in flow
     // In a real app, this would redirect to the OAuth provider
-    
+
     // Generate a mock username based on provider
     const providerUsernames: Record<string, string> = {
       google: "Google User",
@@ -138,13 +139,13 @@ export default function SocialClubPage() {
       github: "GitHub User",
       twitter: "Twitter User"
     };
-    
+
     const mockEmail = `${provider}@example.com`;
     const mockUsername = providerUsernames[provider] || `${provider}_user`;
-    
+
     // Simulate OAuth callback delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     setIsLoggedIn(true);
     setShowSignIn(false);
     setUsername(mockUsername);
@@ -156,46 +157,46 @@ export default function SocialClubPage() {
     {
       id: 1,
       username: "fashionista_queen",
-      avatar: "👑",
+      avatar: <NanoIcon type="crown" size={24} />,
       time: "2h ago",
       content: "Just finished my latest Y2K inspired design! Loving the pink and gold vibes ✨ #Y2K #Fashion #Design",
       likes: 42,
       comments: 8,
       shares: 3,
-      image: "🎨"
+      image: <NanoIcon type="dress" size={48} />
     },
     {
       id: 2,
       username: "digital_dreamer",
-      avatar: "💫",
+      avatar: <NanoIcon type="sparkle" size={24} />,
       time: "5h ago",
       content: "Working on something special for the blog... Can't wait to share it with you all! 💖",
       likes: 67,
       comments: 12,
       shares: 5,
-      image: "📱"
+      image: <NanoIcon type="phone" size={48} />
     },
     {
       id: 3,
       username: "creative_soul",
-      avatar: "🌟",
+      avatar: <NanoIcon type="star" size={24} />,
       time: "1d ago",
       content: "The luxury aesthetic is everything! Red, black, and gold never looked so good 🎯",
       likes: 89,
       comments: 15,
       shares: 7,
-      image: "✨"
+      image: <NanoIcon type="sparkle" size={48} />
     },
     {
       id: 4,
       username: "style_icon",
-      avatar: "💎",
+      avatar: <NanoIcon type="user" size={24} />,
       time: "2d ago",
       content: "New blog post is up! Check out my latest thoughts on digital design trends 📝",
       likes: 124,
       comments: 23,
       shares: 9,
-      image: "📖"
+      image: <NanoIcon type="mirror" size={48} />
     }
   ];
 
@@ -225,7 +226,7 @@ export default function SocialClubPage() {
               </div>
             )}
           </div>
-          
+
           <nav className="flex gap-2 flex-wrap">
             <Link
               href="/home"
@@ -359,11 +360,10 @@ export default function SocialClubPage() {
                         setUsername(sanitized);
                         if (errors.username) setErrors(prev => ({ ...prev, username: "" }));
                       }}
-                      className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${
-                        errors.username 
-                          ? "border-red-500 focus:ring-red-500" 
-                          : "border-black focus:ring-[#fbbf24]"
-                      }`}
+                      className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${errors.username
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-black focus:ring-[#fbbf24]"
+                        }`}
                       placeholder="Choose a username (3-20 chars)"
                       required={isSignUp}
                       maxLength={20}
@@ -388,11 +388,10 @@ export default function SocialClubPage() {
                       setEmail(sanitized);
                       if (errors.email) setErrors(prev => ({ ...prev, email: "" }));
                     }}
-                    className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${
-                      errors.email 
-                        ? "border-red-500 focus:ring-red-500" 
-                        : "border-black focus:ring-[#fbbf24]"
-                    }`}
+                    className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${errors.email
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-black focus:ring-[#fbbf24]"
+                      }`}
                     placeholder="your@email.com"
                     required
                     maxLength={254}
@@ -414,11 +413,10 @@ export default function SocialClubPage() {
                       setPassword(sanitized);
                       if (errors.password) setErrors(prev => ({ ...prev, password: "" }));
                     }}
-                    className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${
-                      errors.password 
-                        ? "border-red-500 focus:ring-red-500" 
-                        : "border-black focus:ring-[#fbbf24]"
-                    }`}
+                    className={`w-full px-4 py-2 border-2 rounded-lg text-sm focus:outline-none focus:ring-2 ${errors.password
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-black focus:ring-[#fbbf24]"
+                      }`}
                     placeholder="••••••••"
                     required
                     maxLength={128}
@@ -437,9 +435,8 @@ export default function SocialClubPage() {
                 <button
                   type="submit"
                   disabled={rateLimited}
-                  className={`w-full px-6 py-3 luxury-gold-gradient border-2 border-black rounded-full text-sm text-black font-bold luxury-text-shadow luxury-glow hover:shadow-xl transition-all ${
-                    rateLimited ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className={`w-full px-6 py-3 luxury-gold-gradient border-2 border-black rounded-full text-sm text-black font-bold luxury-text-shadow luxury-glow hover:shadow-xl transition-all ${rateLimited ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                 >
                   {rateLimited ? `Please wait ${rateLimitTime}s` : (isSignUp ? "Sign Up" : "Sign In")}
                 </button>
@@ -487,14 +484,14 @@ export default function SocialClubPage() {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <div className="flex gap-2">
-                  <button className="px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
-                    📷 Photo
+                  <button className="flex items-center gap-1 px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
+                    <NanoIcon type="camera" size={16} /> Photo
                   </button>
-                  <button className="px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
-                    🎨 GIF
+                  <button className="flex items-center gap-1 px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
+                    <NanoIcon type="sparkle" size={16} /> GIF
                   </button>
-                  <button className="px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
-                    😊 Emoji
+                  <button className="flex items-center gap-1 px-4 py-2 bg-gray-100 border border-black rounded-lg text-xs font-bold hover:bg-gray-200 transition">
+                    <NanoIcon type="star" size={16} /> Emoji
                   </button>
                 </div>
                 <button className="px-6 py-2 luxury-gold-gradient border-2 border-black rounded-full text-xs text-black font-bold luxury-text-shadow hover:shadow-lg transition">
@@ -521,19 +518,19 @@ export default function SocialClubPage() {
                 </div>
 
                 {/* Post Content - Sanitized */}
-                <p 
+                <p
                   className="text-sm text-gray-800 mb-4 leading-relaxed"
-                  dangerouslySetInnerHTML={{ 
-                    __html: DOMPurify.sanitize(post.content, { 
-                      ALLOWED_TAGS: [], 
-                      ALLOWED_ATTR: [] 
-                    }) 
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(post.content, {
+                      ALLOWED_TAGS: [],
+                      ALLOWED_ATTR: []
+                    })
                   }}
                 />
 
                 {/* Post Image/Media */}
                 {post.image && (
-                  <div className="mb-4 bg-gray-100 border-2 border-black rounded-lg p-8 flex items-center justify-center text-6xl">
+                  <div className="mb-4 bg-gray-100 border-2 border-black rounded-lg p-8 flex items-center justify-center">
                     {post.image}
                   </div>
                 )}
@@ -542,20 +539,20 @@ export default function SocialClubPage() {
                 <div className="flex items-center justify-between pt-4 border-t-2 border-gray-200">
                   <div className="flex items-center gap-6">
                     <button className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#dc2626] transition">
-                      <span className="text-lg">❤️</span>
+                      <NanoIcon type="heart" size={20} />
                       {post.likes}
                     </button>
                     <button className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#fbbf24] transition">
-                      <span className="text-lg">💬</span>
+                      <NanoIcon type="mail" size={20} />
                       {post.comments}
                     </button>
                     <button className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#dc2626] transition">
-                      <span className="text-lg">🔁</span>
+                      <NanoIcon type="sparkle" size={20} />
                       {post.shares}
                     </button>
                   </div>
-                  <button className="text-sm font-bold text-gray-700 hover:text-[#fbbf24] transition">
-                    🔖 Save
+                  <button className="flex items-center gap-1 text-sm font-bold text-gray-700 hover:text-[#fbbf24] transition">
+                    <NanoIcon type="star" size={16} /> Save
                   </button>
                 </div>
               </div>
@@ -563,7 +560,9 @@ export default function SocialClubPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔒</div>
+            <div className="flex justify-center mb-4">
+              <NanoIcon type="warning" size={64} />
+            </div>
             <h2 className="text-2xl elegant-serif metallic-text luxury-text-shadow mb-2">
               Join the Social Club
             </h2>

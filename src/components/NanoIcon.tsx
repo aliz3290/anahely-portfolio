@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-type IconType = 'sparkle' | 'crown' | 'user' | 'star' | 'heart' | 'mail' | 'group' | 'warning' | 'camera' | 'music' | 'phone' | 'dress' | 'lipstick' | 'mirror' | 'kiss' | 'tie';
+type IconType = 'sparkle' | 'crown' | 'user' | 'star' | 'heart' | 'mail' | 'group' | 'warning' | 'camera' | 'music' | 'phone' | 'dress' | 'lipstick' | 'mirror' | 'kiss' | 'tie' | 'palette' | 'book' | 'puzzle' | 'game' | 'mask';
 
 interface NanoIconProps {
     type: IconType;
@@ -25,6 +25,11 @@ const iconMap: Record<IconType, string> = {
     mirror: '/assets/nano_sparkle.png', // Fallback
     kiss: '/assets/nano_star.png', // Fallback
     tie: '/assets/nano_crown.png', // Fallback
+    palette: '/assets/nano_sparkle.png', // Fallback
+    book: '/assets/nano_star.png', // Fallback
+    puzzle: '/assets/nano_sparkle.png', // Fallback
+    game: '/assets/nano_sparkle.png', // Fallback
+    mask: '/assets/nano_crown.png', // Fallback
 };
 
 export default function NanoIcon({ type, className = '', size = 24 }: NanoIconProps) {

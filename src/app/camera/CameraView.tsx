@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NanoIcon from "@/components/NanoIcon";
 
 // Webcam Toy filters - over 80 effects
 const filters = {
@@ -345,7 +346,7 @@ export default function CameraView() {
         {!isStreaming && hasPermission === null && !error && (
           <div className="flex h-full items-center justify-center">
             <div className="text-center space-y-4 p-6">
-              <div className="text-6xl mb-4">📷</div>
+              <div className="flex justify-center mb-4"><NanoIcon type="camera" size={64} /></div>
               <h2 className="text-xl font-bold text-white mb-2">Camera Access Required</h2>
               <p className="text-slate-400 text-sm mb-6 max-w-md">
                 To use the camera features, we need your permission to access your camera.
@@ -363,7 +364,7 @@ export default function CameraView() {
         {!isStreaming && hasPermission === false && !error && (
           <div className="flex h-full items-center justify-center">
             <div className="text-center space-y-4 p-6">
-              <div className="text-6xl mb-4">🔒</div>
+              <div className="flex justify-center mb-4"><NanoIcon type="warning" size={64} /></div>
               <h2 className="text-xl font-bold text-white mb-2">Camera Permission Denied</h2>
               <p className="text-slate-400 text-sm mb-6 max-w-md">
                 Camera access was denied. Please allow camera access in your browser settings to use this feature.
@@ -380,7 +381,7 @@ export default function CameraView() {
         {error && (
           <div className="flex h-full items-center justify-center p-4">
             <div className="text-center space-y-4">
-              <div className="text-6xl mb-4">⚠️</div>
+              <div className="flex justify-center mb-4"><NanoIcon type="warning" size={64} /></div>
               <p className="text-red-400 text-sm font-medium">{error}</p>
               <button
                 onClick={requestCameraPermission}
@@ -518,8 +519,8 @@ export default function CameraView() {
                 key={filterName}
                 onClick={() => setSelectedFilter(filterName)}
                 className={`group relative rounded-lg border overflow-hidden transition ${selectedFilter === filterName
-                    ? "border-indigo-400 ring-2 ring-indigo-400/50"
-                    : "border-slate-700 hover:border-slate-600"
+                  ? "border-indigo-400 ring-2 ring-indigo-400/50"
+                  : "border-slate-700 hover:border-slate-600"
                   } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900`}
               >
                 {/* Preview video */}
@@ -549,8 +550,8 @@ export default function CameraView() {
                 </div>
                 {/* Filter name overlay */}
                 <div className={`absolute bottom-0 left-0 right-0 px-2 py-1.5 text-xs font-medium transition ${selectedFilter === filterName
-                    ? "bg-indigo-600/90 text-indigo-100"
-                    : "bg-slate-900/80 text-slate-300 group-hover:bg-slate-900/90"
+                  ? "bg-indigo-600/90 text-indigo-100"
+                  : "bg-slate-900/80 text-slate-300 group-hover:bg-slate-900/90"
                   }`}>
                   {filterName}
                 </div>
